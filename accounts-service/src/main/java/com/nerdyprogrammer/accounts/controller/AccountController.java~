@@ -43,7 +43,7 @@ public class AccountController {
      * @return AccountDetails for a given mobile number
      */
     @GetMapping("/get")
-    public ResponseEntity<CustomerDto> getAccountDetails(@RequestParam
+    public ResponseEntity<CustomerDto> getAccountDetails(@RequestParam @Valid
                                                              @Pattern(regexp = "(^$|[0-9]{10})",
                                                                      message = "Mobile number should be 10 digits" )
                                                              String mobileNumber) {
@@ -73,7 +73,7 @@ public class AccountController {
 
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam
+    public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam @Valid
                                                                 @Pattern(regexp = "(^$|[0-9]{10})",
                                                                         message = "Mobile number should be 10 digits")
                                                                 String mobileNumber) {
