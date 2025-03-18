@@ -1,5 +1,6 @@
 package com.nerdyprogrammer.accounts.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,19 +8,25 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+@Schema(name = "CustomerDto",
+description = "Schema to hold Customer and Account details")
 public class CustomerDto {
 
     @NotEmpty(message = "Name cannot be empty")
     @Size(min = 5, max = 30, message = "The length of the customer name should be between 5 and 30")
+    @Schema(description = "Name of the customer", example = "Naveen Kumar")
     private String name;
 
     @NotEmpty(message = "Email address cannot be empty")
     @Email(message = "Email address should be valid")
+    @Schema(description= "Email address of the customer", example = "abc@gmail.com")
     private String email;
 
     @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number should be 10 digits")
     @NotEmpty(message = "Mobile number cannot be empty")
+    @Schema(description= "Mobile number of the customer", example = "1234567890")
     private String mobileNumber;
 
+    @Schema(description = "Account details of the customer")
     private AccountDto accountDto;
 }

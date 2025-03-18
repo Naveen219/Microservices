@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Account extends BaseEntity{
+public class Account extends Auditable {
 
     @Column(name = "customer_id")
     private Long customerId;

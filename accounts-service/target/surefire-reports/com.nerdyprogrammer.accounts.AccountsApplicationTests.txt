@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.nerdyprogrammer.accounts.AccountsApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 26.63 s -- in com.nerdyprogrammer.accounts.AccountsApplicationTests

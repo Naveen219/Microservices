@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class Account extends BaseEntity{
 
-    @Column(name = "column_id")
+    @Column(name = "customer_id")
     private Long customerId;
 
     @Id
