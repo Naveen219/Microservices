@@ -5,8 +5,8 @@ import com.nerdyprogrammer.accounts.dto.AccountDto;
 import com.nerdyprogrammer.accounts.dto.CustomerDto;
 import com.nerdyprogrammer.accounts.entity.Account;
 import com.nerdyprogrammer.accounts.entity.Customer;
-import com.nerdyprogrammer.accounts.exceptions.CustomerAlreadyExistsException;
-import com.nerdyprogrammer.accounts.exceptions.ResourceNotFoundException;
+import com.nerdyprogrammer.accounts.exception.CustomerAlreadyExistsException;
+import com.nerdyprogrammer.accounts.exception.ResourceNotFoundException;
 import com.nerdyprogrammer.accounts.mapper.AccountMapper;
 import com.nerdyprogrammer.accounts.mapper.CustomerMapper;
 import com.nerdyprogrammer.accounts.repository.AccountRepository;
@@ -15,12 +15,9 @@ import com.nerdyprogrammer.accounts.service.IAccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-
-import static com.nerdyprogrammer.accounts.mapper.CustomerMapper.toCustomerDto;
 
 @Service
 // by default allows constructor injection for all the final fields
