@@ -1,0 +1,41 @@
+services:
+  account-service:
+    image: naveenkumarvunnam/account-service:microservices
+    container_name: account-service
+    ports:
+      - "8080:8080"
+    deploy:
+       resources:
+            limits:
+              memory: 700M
+    networks:
+        - microservices-network
+
+  loan-service:
+    image: naveenkumarvunnam/loan-service:microservices
+    container_name: loan-service
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+    networks:
+      - microservices-network
+  card-service:
+    image: naveenkumarvunnam/card-service:microservices
+    container_name: card-service
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+    networks:
+      - microservices-network
+
+
+# to enable communication between services
+networks:
+    microservices-network:
+        driver: bridge
