@@ -11,9 +11,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +32,19 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Card Controller", description = "Controller for managing cards")
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
+@Slf4j
 public class CardController {
-    private ICardService cardService;
+
+    @Value("${build.version}")
+    private String build_version;
+
+    private final ICardService cardService;
+
+    @Autowired
+    public CardController(ICardService cardService) {
+        this.cardService = cardService;
+    }
 
     @Operation(
             summary = "Create Card REST API",
@@ -158,4 +171,17 @@ public class CardController {
         }
     }
 
+
+    @GetMapping("/build-info")
+    @Operation(summary = "Get Build Version", description = "Get Build version of the application")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    public ResponseEntity<String> getBuildVersion() {
+        log.info("Build version of the application : {}", build_version);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(build_version);
+    }
 }

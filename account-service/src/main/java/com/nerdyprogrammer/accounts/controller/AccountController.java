@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,18 +30,25 @@ import static com.nerdyprogrammer.accounts.constants.AccountConstants.STATUS_200
 //Note : ResponseBody annotation returns data in the form of JSON
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@RequiredArgsConstructor
 @Validated
 @Tag(name = "CRUD REST API for Accounts Microservice", description = "CRUD REST API for Accounts")
+@Slf4j
 public class AccountController {
 
 
+    @Value("${build.version}")
+    private String build_version;
+
     private final IAccountsService accountsService;
 
+    @Autowired
+    public AccountController(IAccountsService accountsService) {
+        this.accountsService = accountsService;
+    }
 
     @PostMapping("/create")
     @Operation(summary = "Create a new account", description = "Create a new account")
-    @ApiResponses ({
+    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
@@ -53,7 +63,7 @@ public class AccountController {
      */
     @GetMapping("/get")
     @Operation(summary = "Get account details", description = "Get account details for a given mobile number")
-    @ApiResponses ({
+    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
@@ -92,7 +102,7 @@ public class AccountController {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "HTTP Status OK"),
             @ApiResponse(responseCode = "417", description = "Expectation failed"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number should be 10 digits") String mobileNumber) {
         boolean isUpdated = accountsService.deleteAccount(mobileNumber);
@@ -102,5 +112,18 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseDto(AccountConstants.STATUS_417, AccountConstants.MESSAGE_417_DELETE));
         }
 
+    }
+
+    @GetMapping("/build-info")
+    @Operation(summary = "Get Build Version", description = "Get Build version of the application")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    public ResponseEntity<String> getBuildVersion() {
+        log.info("Build version of the application : {}", build_version);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(build_version);
     }
 }
